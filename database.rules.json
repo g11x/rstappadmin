@@ -1,0 +1,31 @@
+{
+  "rules": {
+    "checklists": {
+      ".read": true,
+      ".write": false
+    },
+    "users": {
+      ".read": true,
+      ".write": false,
+      "$user_id": {
+        ".read": "$user_id === auth.uid",
+        ".write": "$user_id === auth.uid",
+        ".validate": "newData.hasChildren(['email', 'uid'])",
+        "uid": {
+          ".validate": "newData.val() === auth.uid"
+        }
+      }
+    },
+    "notifications": {
+      ".read": "root.child('authorizations/notifications/' + auth.uid).val() === true",
+      ".write": "root.child('authorizations/notifications/' + auth.uid).val() === true"
+    },
+    "authorizations": {
+      ".write": false,
+      ".read": false,
+      "unauthorized": {
+        ".read": "root.child('authorizations/notifications/' + auth.uid).val() !== true"
+      }
+    }
+  }
+}
